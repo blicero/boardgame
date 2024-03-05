@@ -1,0 +1,65 @@
+# -*- mode: org; fill-column: 78; -*-
+# Time-stamp: <2024-03-05 17:51:58 krylon>
+#+TAGS: internals(i) ui(u) bug(b) feature(f)
+#+TAGS: database(d) design(e), meditation(m)
+#+TAGS: optimize(o) refactor(r) cleanup(c)
+#+TODO: TODO(t)  RESEARCH(r) IMPLEMENT(i) TEST(e) | DONE(d) FAILED(f) CANCELLED(c)
+#+TODO: MEDITATE(m) PLANNING(p) | SUSPENDED(s)
+#+PRIORITIES: A G D
+
+* Boardgame
+  I want to play with the idea of a board game and writing several engines to
+  play the game.
+  This is going to be very open-ended, the main goal is to explore different
+  ways of implementing a player AI.
+  But I will also need an actual game to play. I want something less rigid
+  than chess, less complicated than, say, Battletech, I want to allow for an
+  arbitrary number of players.
+  I also anticipate experimenting with different programming languages. I
+  think I am going to create some sort of network protocol for engines to play
+  so that I can pit different engines against each other that are written in
+  different languages.
+**  Clocktable
+   #+BEGIN: clocktable :scope file :maxlevel 255 :emphasize t
+   #+END:
+** Rules
+   I could use a grid as in chess, go, reversi, etc., or I could use a
+   "continuous" board as in Warhammer 40k. I kind of like the latter, so I
+   think I am going to with that.
+   But it will make the board more difficult if I want to have any sort of
+   terrain instead of an empty, featureless plane as in chess.
+   I want to have different pieces as in chess. The pieces shall have the
+   following characteristics:
+   - Range
+   - Damage
+   - Hit points
+   - Speed
+*** Board
+    Okay, after thinking about a little, I am going to go with a rectangular
+    board and a grid. Each field can have an elevation, so features of the
+    terrain can be used for cover. Fields should have further qualities, if
+    they have negative elevation, I want fields that are more difficult to
+    cross (i.e. a lake or river) and fields that are impossible to cross.
+    I want to be able to edit and display/render boards easily.
+** Engines
+** Bugs
+** Journal
+*** [2024-03-02 Sa 20:15]
+    I've gone down quite the rabbit hole, and it has given me a case of
+    mind-paralysis. It's like there's so many possibilities, I cannot choose
+    just one. This isn't good.
+    I think I should start by devising a *simple* board game, and then I can
+    grow it from there.
+    How about a single player game, you have a terrain and need to reach a
+    certain field with the least possible number of moves?
+    Yes, sounds good.
+*** [2024-03-03 So 15:13]
+    After being very enthusiastic when I first thought of this project, I have
+    been kind stuck for the past days. But I did have a few thoughts pop into
+    my mind this weekend.
+    The main idea for a player / "AI" is cost and goals.
+    The player has to reach some goal, e.g. reach a certain field on the
+    board, and doing things, such as moving, has a cost in action points.
+    To reach the goal costs a certain amount, and the idea I just had was to
+    evaluate each possible move by how much it lowers that cost for subsequent
+    moves.

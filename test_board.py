@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Time-stamp: <2024-03-05 18:45:23 krylon>
+# Time-stamp: <2024-03-05 20:08:16 krylon>
 #
 # /home/krylon/OneDrive/Dokumente/code/boardgame/game/test_board.py
 # created on 05. 03. 2024
@@ -36,11 +36,11 @@ game.test_board
 import math
 import unittest
 
-from boardgame.board import Direction, Vector
+from boardgame.board import Board, Direction, Field, Vector
 
 
 class TestVector(unittest.TestCase):
-    """Test the vector."""
+    """Test the Vector class"""
 
     def test_01_eq(self) -> None:
         """Test for equality"""
@@ -86,6 +86,29 @@ class TestVector(unittest.TestCase):
         for c in test_cases:
             r = c[0].length()
             self.assertEqual(r, c[1])
+
+
+class TestBoard(unittest.TestCase):
+    """Test the Board"""
+
+    def test_01_pos_valid(self) -> None:
+        """Test if we can tell valid places from invalid ones."""
+        b = Board([[Field(0, "Grass") for x in range(20)] for x in range(20)])
+
+        test_cases = [
+            (Vector(2, 7), True),
+            (Vector(42, 1), False),
+            (Vector(19, 19), True),
+            (Vector(0, 0), True),
+            (Vector(19, 0), True),
+            (Vector(0, 19), True),
+            (Vector(-1, 0), False),
+        ]
+
+        for c in test_cases:
+            r = b.pos_valid(c[0])
+            self.assertEqual(r, c[1])
+
 
 # Local Variables: #
 # python-indent: 4 #

@@ -1,5 +1,5 @@
 # -*- mode: org; fill-column: 78; -*-
-# Time-stamp: <2024-03-05 18:46:04 krylon>
+# Time-stamp: <2024-03-05 20:08:27 krylon>
 #+TAGS: internals(i) ui(u) bug(b) feature(f)
 #+TAGS: database(d) design(e), meditation(m)
 #+TAGS: optimize(o) refactor(r) cleanup(c)
@@ -21,15 +21,15 @@
   different languages.
 **  Clocktable
    #+BEGIN: clocktable :scope file :maxlevel 255 :emphasize t
-   #+CAPTION: Clock summary at [2024-03-05 Di 18:46]
+   #+CAPTION: Clock summary at [2024-03-05 Di 20:08]
    | Headline              | Time   |        |      |      |
    |-----------------------+--------+--------+------+------|
-   | *Total time*          | *0:47* |        |      |      |
+   | *Total time*          | *1:19* |        |      |      |
    |-----------------------+--------+--------+------+------|
-   | *Boardgame*           | *0:47* |        |      |      |
-   | \_  /Rules [0/0]/     |        | /0:47/ |      |      |
-   | \_    Board [0/0]     |        |        | 0:47 |      |
-   | \_      Testing [0/0] |        |        |      | 0:47 |
+   | *Boardgame*           | *1:19* |        |      |      |
+   | \_  /Rules [0/0]/     |        | /1:19/ |      |      |
+   | \_    Board [0/0]     |        |        | 1:19 |      |
+   | \_      Testing [0/0] |        |        |      | 1:19 |
    #+END:
 ** Rules [0/0]
    :PROPERTIES:
@@ -64,6 +64,7 @@
      :VISIBILITY: children
      :END:
      :LOGBOOK:
+     CLOCK: [2024-03-05 Di 19:36]--[2024-03-05 Di 20:08] =>  0:32
      CLOCK: [2024-03-05 Di 17:59]--[2024-03-05 Di 18:46] =>  0:47
      :END:
 ** Engines [0/0]

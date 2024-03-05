@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Time-stamp: <2024-03-05 17:38:48 krylon>
+# Time-stamp: <2024-03-05 18:38:48 krylon>
 #
 # /home/krylon/OneDrive/Dokumente/code/boardgame/server/board.py
 # created on 29. 02. 2024
@@ -72,8 +72,8 @@ class Vector:
         """Return the distance between the Vector and the given other Vector"""
         return (other - self).length()
 
-    def __eq__(self, other: 'Vector') -> bool:
-        return self.x == other.x and self.y == other.y
+    def __eq__(self, other) -> bool:
+        return isinstance(other, Vector) and (self.x == other.x) and (self.y == other.y)
 
     def __sub__(self, other: 'Vector') -> 'Vector':
         delta = Vector(self.x - other.x, self.y - other.y)

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Time-stamp: <2024-03-05 17:41:03 krylon>
+# Time-stamp: <2024-03-05 18:45:23 krylon>
 #
 # /home/krylon/OneDrive/Dokumente/code/boardgame/game/test_board.py
 # created on 05. 03. 2024
@@ -33,19 +33,59 @@ game.test_board
 (c) 2024 Benjamin Walkenhorst
 """
 
+import math
 import unittest
 
-from game.board import Vector
+from boardgame.board import Direction, Vector
 
 
 class TestVector(unittest.TestCase):
     """Test the vector."""
 
-    def test_eq(self) -> None:
+    def test_01_eq(self) -> None:
+        """Test for equality"""
         test_cases = [
             (Vector(5, 7), Vector(5, 7), True),
             (Vector(1, 1), Vector(24, 17), False),
         ]
+
+        for c in test_cases:
+            result = c[0] == c[1]
+            self.assertEqual(result, c[2])
+
+    def test_02_sub(self) -> None:
+        """Test subtraction."""
+        test_cases = [
+            (Vector(10, 10), Vector(5, 5), Vector(5, 5)),
+            (Vector(5, 5), Vector(5, 5), Vector(0, 0)),
+        ]
+
+        for c in test_cases:
+            v = c[0] - c[1]
+            self.assertEqual(v, c[2])
+
+    def test_03_add(self) -> None:
+        """Test addition."""
+        test_cases = [
+            (Vector(0, 0), Direction.Up, Vector(0, 1)),
+            (Vector(25, 2), Direction.DownLeft, Vector(24, 1)),
+            (Vector(19, 5), Direction.Right, Vector(20, 5)),
+        ]
+
+        for c in test_cases:
+            v = c[0] + c[1]
+            self.assertEqual(v, c[2])
+
+    def test_04_length(self) -> None:
+        """Test the length method."""
+        test_cases = [
+            (Vector(0, 0), 0),
+            (Vector(1, 1), math.sqrt(2)),
+        ]
+
+        for c in test_cases:
+            r = c[0].length()
+            self.assertEqual(r, c[1])
 
 # Local Variables: #
 # python-indent: 4 #

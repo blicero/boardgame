@@ -1,5 +1,5 @@
 # -*- mode: org; fill-column: 78; -*-
-# Time-stamp: <2024-03-05 17:51:58 krylon>
+# Time-stamp: <2024-03-05 18:46:04 krylon>
 #+TAGS: internals(i) ui(u) bug(b) feature(f)
 #+TAGS: database(d) design(e), meditation(m)
 #+TAGS: optimize(o) refactor(r) cleanup(c)
@@ -21,8 +21,21 @@
   different languages.
 **  Clocktable
    #+BEGIN: clocktable :scope file :maxlevel 255 :emphasize t
+   #+CAPTION: Clock summary at [2024-03-05 Di 18:46]
+   | Headline              | Time   |        |      |      |
+   |-----------------------+--------+--------+------+------|
+   | *Total time*          | *0:47* |        |      |      |
+   |-----------------------+--------+--------+------+------|
+   | *Boardgame*           | *0:47* |        |      |      |
+   | \_  /Rules [0/0]/     |        | /0:47/ |      |      |
+   | \_    Board [0/0]     |        |        | 0:47 |      |
+   | \_      Testing [0/0] |        |        |      | 0:47 |
    #+END:
-** Rules
+** Rules [0/0]
+   :PROPERTIES:
+   :COOKIE_DATA: todo recursive
+   :VISIBILITY: children
+   :END:
    I could use a grid as in chess, go, reversi, etc., or I could use a
    "continuous" board as in Warhammer 40k. I kind of like the latter, so I
    think I am going to with that.
@@ -34,15 +47,27 @@
    - Damage
    - Hit points
    - Speed
-*** Board
+*** Board [0/0]
+    :PROPERTIES:
+    :COOKIE_DATA: todo recursive
+    :VISIBILITY: children
+    :END:
     Okay, after thinking about a little, I am going to go with a rectangular
     board and a grid. Each field can have an elevation, so features of the
     terrain can be used for cover. Fields should have further qualities, if
     they have negative elevation, I want fields that are more difficult to
     cross (i.e. a lake or river) and fields that are impossible to cross.
     I want to be able to edit and display/render boards easily.
-** Engines
-** Bugs
+**** Testing [0/0]
+     :PROPERTIES:
+     :COOKIE_DATA: todo recursive
+     :VISIBILITY: children
+     :END:
+     :LOGBOOK:
+     CLOCK: [2024-03-05 Di 17:59]--[2024-03-05 Di 18:46] =>  0:47
+     :END:
+** Engines [0/0]
+** Bugs [0/0]
 ** Journal
 *** [2024-03-02 Sa 20:15]
     I've gone down quite the rabbit hole, and it has given me a case of

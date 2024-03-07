@@ -1,5 +1,5 @@
 # -*- mode: org; fill-column: 78; -*-
-# Time-stamp: <2024-03-05 20:08:27 krylon>
+# Time-stamp: <2024-03-07 21:57:45 krylon>
 #+TAGS: internals(i) ui(u) bug(b) feature(f)
 #+TAGS: database(d) design(e), meditation(m)
 #+TAGS: optimize(o) refactor(r) cleanup(c)
@@ -21,15 +21,15 @@
   different languages.
 **  Clocktable
    #+BEGIN: clocktable :scope file :maxlevel 255 :emphasize t
-   #+CAPTION: Clock summary at [2024-03-05 Di 20:08]
+   #+CAPTION: Clock summary at [2024-03-07 Do 21:57]
    | Headline              | Time   |        |      |      |
    |-----------------------+--------+--------+------+------|
-   | *Total time*          | *1:19* |        |      |      |
+   | *Total time*          | *4:41* |        |      |      |
    |-----------------------+--------+--------+------+------|
-   | *Boardgame*           | *1:19* |        |      |      |
-   | \_  /Rules [0/0]/     |        | /1:19/ |      |      |
-   | \_    Board [0/0]     |        |        | 1:19 |      |
-   | \_      Testing [0/0] |        |        |      | 1:19 |
+   | *Boardgame*           | *4:41* |        |      |      |
+   | \_  /Rules [0/0]/     |        | /4:41/ |      |      |
+   | \_    Board [0/0]     |        |        | 4:41 |      |
+   | \_      Testing [0/0] |        |        |      | 1:38 |
    #+END:
 ** Rules [0/0]
    :PROPERTIES:
@@ -52,6 +52,9 @@
     :COOKIE_DATA: todo recursive
     :VISIBILITY: children
     :END:
+    :LOGBOOK:
+    CLOCK: [2024-03-07 Do 18:54]--[2024-03-07 Do 21:57] =>  3:03
+    :END:
     Okay, after thinking about a little, I am going to go with a rectangular
     board and a grid. Each field can have an elevation, so features of the
     terrain can be used for cover. Fields should have further qualities, if
@@ -64,6 +67,7 @@
      :VISIBILITY: children
      :END:
      :LOGBOOK:
+     CLOCK: [2024-03-07 Do 18:35]--[2024-03-07 Do 18:54] =>  0:19
      CLOCK: [2024-03-05 Di 19:36]--[2024-03-05 Di 20:08] =>  0:32
      CLOCK: [2024-03-05 Di 17:59]--[2024-03-05 Di 18:46] =>  0:47
      :END:

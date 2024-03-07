@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Time-stamp: <2024-03-05 20:08:16 krylon>
+# Time-stamp: <2024-03-07 21:56:59 krylon>
 #
 # /home/krylon/OneDrive/Dokumente/code/boardgame/game/test_board.py
 # created on 05. 03. 2024
@@ -36,7 +36,7 @@ game.test_board
 import math
 import unittest
 
-from boardgame.board import Board, Direction, Field, Vector
+from boardgame.board import Board, Direction, Vector
 
 
 class TestVector(unittest.TestCase):
@@ -93,7 +93,8 @@ class TestBoard(unittest.TestCase):
 
     def test_01_pos_valid(self) -> None:
         """Test if we can tell valid places from invalid ones."""
-        b = Board([[Field(0, "Grass") for x in range(20)] for x in range(20)])
+        # b = Board([[Field(0, "Grass") for x in range(20)] for x in range(20)])
+        b = Board.make_plain_board(20, 20)
 
         test_cases = [
             (Vector(2, 7), True),
@@ -109,6 +110,20 @@ class TestBoard(unittest.TestCase):
             r = b.pos_valid(c[0])
             self.assertEqual(r, c[1])
 
+    def test_02_path(self) -> None:
+        """Test the naive path finding algorithm."""
+        b = Board.make_plain_board(8, 8)
+        test_cases = [
+            (Vector(0, 0), Vector(7, 7), [Direction.UpRight for x in range(7)]),
+            (Vector(0, 0), Vector(7, 0), [Direction.Right for x in range(7)]),
+            (Vector(4, 4), Vector(5, 4), [Direction.Right]),
+        ]
+
+        for c in test_cases:
+            p = b.path_straight(c[0], c[1])
+            self.assertIsNotNone(p)
+            assert p is not None
+            self.assertCountEqual(p, c[2])
 
 # Local Variables: #
 # python-indent: 4 #

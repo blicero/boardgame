@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Time-stamp: <2024-03-05 18:38:48 krylon>
+# Time-stamp: <2024-03-07 20:46:48 krylon>
 #
 # /home/krylon/OneDrive/Dokumente/code/boardgame/server/board.py
 # created on 29. 02. 2024
@@ -36,7 +36,15 @@ board
 import math
 from dataclasses import dataclass
 from enum import Enum, auto
-from typing import NamedTuple, Optional
+from typing import Final, NamedTuple, Optional
+
+
+class GameException(Exception):
+    """Base class for game-related exceptions."""
+
+
+class InvalidMove(GameException):
+    """InvalidMove is raised when a move is attempted that is not allowed by the rules."""
 
 
 class Field(NamedTuple):
@@ -71,6 +79,13 @@ class Vector:
     def distance(self, other: 'Vector') -> float:
         """Return the distance between the Vector and the given other Vector"""
         return (other - self).length()
+
+    def clone(self) -> 'Vector':
+        """Create an identical but separate copy of the Vector."""
+        return Vector(self.x, self.y)
+
+    def __str__(self) -> str:
+        return f"({self.x}/{self.y})"
 
     def __eq__(self, other) -> bool:
         return isinstance(other, Vector) and (self.x == other.x) and (self.y == other.y)
@@ -119,6 +134,12 @@ class Board:  # pylint: disable-msg=R0903
     size: tuple[int, int]
     fields: list[list[Field]]
 
+    @classmethod
+    def make_plain_board(cls, width: int, height: int, terrain: str = "Grass") -> "Board":
+        """Make a plain board of the given dimensions."""
+        b = Board([[Field(0, terrain) for y in range(height)] for x in range(width)])
+        return b
+
     def __init__(self, fields: list[list[Field]]):
         self.fields = fields
         self.size = (len(fields), len(fields[0]))
@@ -129,6 +150,39 @@ class Board:  # pylint: disable-msg=R0903
     def pos_valid(self, p: Vector) -> bool:
         """Check if the given Vector points to a Field on the Board"""
         return 0 <= p.x < self.size[0] and 0 <= p.y < self.size[1]
+
+    def path_straight(self, p1: Vector, p2: Vector) -> Optional[list[Direction]]:
+        """Calculate the path from one position to another, without regard for cost."""
+        if p1 == p2:
+            return []
+        if not self.pos_valid(p1) or not self.pos_valid(p2):
+            raise InvalidMove(f"{p1} -> {p2} {self.size}")
+
+        path = []
+        pos = p1.clone()
+
+        while pos != p2:
+            distance: float = (p2 - pos).length()
+            step_dir: Direction
+
+            for d in Direction:
+                new_pos: Vector = pos + d
+                if self.pos_valid(new_pos):
+                    new_distance: float = (p2 - new_pos).length()
+                    if new_distance < distance:
+                        distance = new_distance
+                        step_dir = d
+
+            pos += step_dir
+            path.append(step_dir)
+
+        return path
+
+    def __getitem__(self, key: Vector) -> Field:
+        if not self.pos_valid(key):
+            raise KeyError(
+                f"{key} is not a valid position on the board ({self.size[0]}x{self.size[1]})")
+        return self.fields[key.x][key.y]
 
 
 @dataclass(slots=True, kw_only=True)
@@ -184,9 +238,23 @@ class Game:  # pylint: disable-msg=R0903
     turn: int
     history: list
 
-    def move(self, p: Piece, dst: Vector) -> None:
-        """Attempt to move a piece to the given position."""
-        # orig_dist: float = p.distance(dst)
+    def step_cost(self, pos: Vector, d: Direction) -> int:
+        """Calculate the cost of stepping from the given field into the neighboring field in the
+        given direction."""
+        assert self.board.pos_valid(pos)
+        new_pos: Vector = pos + d
+
+        if not self.board.pos_valid(new_pos):
+            raise InvalidMove(f"Move {pos}->{new_pos} is invalid (Board: {self.board.size})")
+
+        f1: Final[Field] = self.board[pos]
+        f2: Final[Field] = self.board[new_pos]
+        cost: Final[int] = abs(f2.elevation - f1.elevation) + 1
+
+        return cost
+
+    def step(self, p: Piece, dst: Vector) -> None:
+        """Attempt to move a piece one step closer to the given position."""
         dist: float = p.distance(dst)  # math.inf
         move_dir: Optional[Direction] = None
         for d in Direction:
@@ -198,6 +266,7 @@ class Game:  # pylint: disable-msg=R0903
                     move_dir = d
         if move_dir is not None:
             p.move(move_dir)
+
 
 # Local Variables: #
 # python-indent: 4 #

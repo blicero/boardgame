@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Time-stamp: <2024-03-09 21:08:14 krylon>
+# Time-stamp: <2024-03-09 22:37:51 krylon>
 #
 # /home/krylon/OneDrive/Dokumente/code/boardgame/game/test_board.py
 # created on 05. 03. 2024
@@ -164,6 +164,10 @@ class TestBoard(unittest.TestCase):
                                           Direction.Right,
                                           Direction.Right,
                                           Direction.DownRight]),
+            (Vector(0, 0), Vector(0, 4), [Direction.Up,
+                                          Direction.Up,
+                                          Direction.Up,
+                                          Direction.Up]),
         ]
 
         for c in test_cases:

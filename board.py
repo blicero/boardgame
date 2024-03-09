@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Time-stamp: <2024-03-07 20:46:48 krylon>
+# Time-stamp: <2024-03-09 21:21:18 krylon>
 #
 # /home/krylon/OneDrive/Dokumente/code/boardgame/server/board.py
 # created on 29. 02. 2024
@@ -64,6 +64,12 @@ class Direction(Enum):
     DownLeft = auto()
     Left = auto()
     UpLeft = auto()
+
+    def __str__(self) -> str:
+        return self.name
+
+    def __repr__(self) -> str:
+        return self.name
 
 
 @dataclass(slots=True)
@@ -142,7 +148,7 @@ class Board:  # pylint: disable-msg=R0903
 
     def __init__(self, fields: list[list[Field]]):
         self.fields = fields
-        self.size = (len(fields), len(fields[0]))
+        self.size = (len(fields[0]), len(fields))
 
         for i in range(1, len(fields)):
             assert len(fields[i]) == len(fields[0])
@@ -150,6 +156,21 @@ class Board:  # pylint: disable-msg=R0903
     def pos_valid(self, p: Vector) -> bool:
         """Check if the given Vector points to a Field on the Board"""
         return 0 <= p.x < self.size[0] and 0 <= p.y < self.size[1]
+
+    def step_cost(self, pos: Vector, d: Direction) -> int:
+        """Calculate the cost of stepping from the given field into the neighboring field in the
+        given direction."""
+        assert self.pos_valid(pos)
+        new_pos: Vector = pos + d
+
+        if not self.pos_valid(new_pos):
+            raise InvalidMove(f"Move {pos}->{new_pos} is invalid (Board: {self.size})")
+
+        f1: Final[Field] = self[pos]
+        f2: Final[Field] = self[new_pos]
+        cost: Final[int] = abs(f2.elevation - f1.elevation) + 1
+
+        return cost
 
     def path_straight(self, p1: Vector, p2: Vector) -> Optional[list[Direction]]:
         """Calculate the path from one position to another, without regard for cost."""
@@ -178,11 +199,46 @@ class Board:  # pylint: disable-msg=R0903
 
         return path
 
+    def path_cost(self, p1: Vector, p2: Vector) -> Optional[list[Direction]]:
+        """Calculate the cheapest path that leads from p1 to p2"""
+        if p1 == p2:
+            return []
+        if not self.pos_valid(p1) or not self.pos_valid(p2):
+            raise InvalidMove(f"{p1} -> {p2} {self.size}")
+
+        # distance: Final[float] = (p2 - p1).length()
+        path: list[Direction] = []
+        pos = p1.clone()
+
+        while pos != p2:
+            candidates: list[tuple[Direction, int, float]] = []
+            cur_dist = (p2 - pos).length()
+            for d in Direction:
+                new_pos = pos + d
+                if not self.pos_valid(new_pos):
+                    continue
+                cost = self.step_cost(pos, d)
+                new_distance = (p2 - new_pos).length()
+                if new_distance < cur_dist:
+                    candidates.append((d, cost, new_distance))
+
+            if len(candidates) > 0:
+                candidates.sort(key=lambda x: x[1])
+                candidates = [x for x in candidates if x[1] == candidates[0][1]]
+                candidates.sort(key=lambda x: x[2])
+
+                path.append(candidates[0][0])
+                pos += candidates[0][0]
+            else:
+                return None
+
+        return path
+
     def __getitem__(self, key: Vector) -> Field:
         if not self.pos_valid(key):
             raise KeyError(
                 f"{key} is not a valid position on the board ({self.size[0]}x{self.size[1]})")
-        return self.fields[key.x][key.y]
+        return self.fields[key.y][key.x]
 
 
 @dataclass(slots=True, kw_only=True)
@@ -237,21 +293,6 @@ class Game:  # pylint: disable-msg=R0903
     pieces: list[Piece]
     turn: int
     history: list
-
-    def step_cost(self, pos: Vector, d: Direction) -> int:
-        """Calculate the cost of stepping from the given field into the neighboring field in the
-        given direction."""
-        assert self.board.pos_valid(pos)
-        new_pos: Vector = pos + d
-
-        if not self.board.pos_valid(new_pos):
-            raise InvalidMove(f"Move {pos}->{new_pos} is invalid (Board: {self.board.size})")
-
-        f1: Final[Field] = self.board[pos]
-        f2: Final[Field] = self.board[new_pos]
-        cost: Final[int] = abs(f2.elevation - f1.elevation) + 1
-
-        return cost
 
     def step(self, p: Piece, dst: Vector) -> None:
         """Attempt to move a piece one step closer to the given position."""

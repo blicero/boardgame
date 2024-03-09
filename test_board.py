@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Time-stamp: <2024-03-07 21:56:59 krylon>
+# Time-stamp: <2024-03-09 21:08:14 krylon>
 #
 # /home/krylon/OneDrive/Dokumente/code/boardgame/game/test_board.py
 # created on 05. 03. 2024
@@ -36,7 +36,7 @@ game.test_board
 import math
 import unittest
 
-from boardgame.board import Board, Direction, Vector
+from boardgame.board import Board, Direction, Field, Vector
 
 
 class TestVector(unittest.TestCase):
@@ -124,6 +124,54 @@ class TestBoard(unittest.TestCase):
             self.assertIsNotNone(p)
             assert p is not None
             self.assertCountEqual(p, c[2])
+
+    def test_03_path_cost(self) -> None:
+        """Test find the cheapest path."""
+        b = Board.make_plain_board(8, 8)
+        test_cases = [
+            (Vector(0, 0), Vector(7, 7), [Direction.UpRight for x in range(7)]),
+            (Vector(0, 0), Vector(7, 0), [Direction.Right for x in range(7)]),
+            (Vector(4, 4), Vector(5, 4), [Direction.Right]),
+        ]
+
+        for c in test_cases:
+            p = b.path_cost(c[0], c[1])
+            self.assertIsNotNone(p)
+            assert p is not None
+            self.assertEqual(p, c[2])
+
+        #     0 1 2 3 4 5
+        #     -----------
+        # 0 | 0 1 2 3 4 5
+        # 1 | 0 1 2 3 4 5
+        # 2 | 0 0 0 0 0 0
+        # 3 | 0 1 2 3 4 5
+        # 4 | 0 1 2 3 4 5
+
+        levels = [[0, 1, 2, 3, 2, 1, 0],
+                  [0, 1, 2, 3, 2, 1, 0],
+                  [0, 0, 0, 0, 0, 0, 0],
+                  [0, 1, 2, 3, 2, 1, 0],
+                  [0, 1, 2, 3, 2, 1, 0]]
+        fields = [[Field(x, "Grass") for x in row] for row in levels]
+
+        b = Board(fields)
+
+        test_cases = [
+            (Vector(0, 2), Vector(6, 1), [Direction.Right,
+                                          Direction.Right,
+                                          Direction.Right,
+                                          Direction.Right,
+                                          Direction.Right,
+                                          Direction.DownRight]),
+        ]
+
+        for c in test_cases:
+            p = b.path_cost(c[0], c[1])
+            self.assertIsNotNone(p)
+            assert p is not None  # Pacify mypy
+            self.assertEqual(p, c[2])
+
 
 # Local Variables: #
 # python-indent: 4 #

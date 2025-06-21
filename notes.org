@@ -1,5 +1,5 @@
 # -*- mode: org; fill-column: 78; -*-
-# Time-stamp: <2024-03-09 21:24:27 krylon>
+# Time-stamp: <2024-03-13 13:42:01 krylon>
 #+TAGS: internals(i) ui(u) bug(b) feature(f)
 #+TAGS: database(d) design(e), meditation(m)
 #+TAGS: optimize(o) refactor(r) cleanup(c)
@@ -21,7 +21,7 @@
   different languages.
 **  Clocktable
    #+BEGIN: clocktable :scope file :maxlevel 255 :emphasize t
-   #+CAPTION: Clock summary at [2024-03-09 Sa 21:22]
+   #+CAPTION: Clock summary at [2024-03-11 Mo 22:06]
    | Headline              | Time   |        |      |      |
    |-----------------------+--------+--------+------+------|
    | *Total time*          | *6:58* |        |      |      |
@@ -80,6 +80,9 @@
      CLOCK: [2024-03-05 Di 17:59]--[2024-03-05 Di 18:46] =>  0:47
      :END:
 ** Engines [0/0]
+   [2024-03-11 Mo 22:04]
+   I think I now have enough material to start thinking about playing a game.
+   But I think I need to decide on some set of rules, or it's going to suck.
 ** Bugs [0/0]
 ** Journal
 *** [2024-03-02 Sa 20:15]
@@ -101,3 +104,7 @@
     To reach the goal costs a certain amount, and the idea I just had was to
     evaluate each possible move by how much it lowers that cost for subsequent
     moves.
+*** [2024-03-13 Mi 13:33]
+    Just a random thought, but I could make this an open world simulation
+    rather than a game. Watching goats in Minecraft gave me the idea. Think
+    about it.

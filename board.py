@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Time-stamp: <2024-03-09 21:21:18 krylon>
+# Time-stamp: <2025-06-21 21:12:55 krylon>
 #
 # /home/krylon/OneDrive/Dokumente/code/boardgame/server/board.py
 # created on 29. 02. 2024
@@ -27,8 +27,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 
-"""
-board
+"""board.
 
 (c) 2024 Benjamin Walkenhorst
 """
@@ -48,7 +47,7 @@ class InvalidMove(GameException):
 
 
 class Field(NamedTuple):
-    """One field on the board"""
+    """One field on the board."""
 
     elevation: int
     terrain: str
@@ -56,6 +55,7 @@ class Field(NamedTuple):
 
 class Direction(Enum):
     """Describe the direction of a move."""
+
     Up = auto()
     UpRight = auto()
     Right = auto()
@@ -66,24 +66,27 @@ class Direction(Enum):
     UpLeft = auto()
 
     def __str__(self) -> str:
+        """Stringify."""
         return self.name
 
     def __repr__(self) -> str:
+        """Represent. For real for real."""
         return self.name
 
 
 @dataclass(slots=True)
 class Vector:
     """Vector can be both a position on a board and a direction and distance of movement."""
+
     x: int
     y: int
 
     def length(self) -> float:
-        """Return the length of a vector"""
+        """Return the length of a vector."""
         return math.sqrt(self.x * self.x + self.y * self.y)
 
     def distance(self, other: 'Vector') -> float:
-        """Return the distance between the Vector and the given other Vector"""
+        """Return the distance between the Vector and the given other Vector."""
         return (other - self).length()
 
     def clone(self) -> 'Vector':
@@ -91,12 +94,15 @@ class Vector:
         return Vector(self.x, self.y)
 
     def __str__(self) -> str:
+        """Stringify to the max."""
         return f"({self.x}/{self.y})"
 
     def __eq__(self, other) -> bool:
+        """Equal values for equal data."""
         return isinstance(other, Vector) and (self.x == other.x) and (self.y == other.y)
 
     def __sub__(self, other: 'Vector') -> 'Vector':
+        """Subtract like it was not a negative."""
         delta = Vector(self.x - other.x, self.y - other.y)
         return delta
 
@@ -130,7 +136,7 @@ class Vector:
 
 
 class Board:  # pylint: disable-msg=R0903
-    """The Board where it all happens"""
+    """The Board where it all happens."""
 
     __slots__ = [
         "size",
@@ -154,7 +160,7 @@ class Board:  # pylint: disable-msg=R0903
             assert len(fields[i]) == len(fields[0])
 
     def pos_valid(self, p: Vector) -> bool:
-        """Check if the given Vector points to a Field on the Board"""
+        """Check if the given Vector points to a Field on the Board."""
         return 0 <= p.x < self.size[0] and 0 <= p.y < self.size[1]
 
     def step_cost(self, pos: Vector, d: Direction) -> int:

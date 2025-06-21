@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Time-stamp: <2024-03-01 11:30:38 krylon>
+# Time-stamp: <2025-06-21 21:12:17 krylon>
 #
 # /home/krylon/OneDrive/Dokumente/code/boardgame/server/__init__.py
 # created on 01. 03. 2024
@@ -27,7 +27,8 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 
-"""
+""".
+
 __init__
 
 (c) 2024 Benjamin Walkenhorst
